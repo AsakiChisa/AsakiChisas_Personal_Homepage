@@ -975,13 +975,18 @@
     .music-progress::-moz-range-progress { height: 3px; background: var(--blue); }
     .music-progress::-moz-range-thumb { width: 9px; height: 9px; border: 2px solid var(--line); border-radius: 0; background: var(--sheet); }
 
-    .music-controls { display: grid; grid-template-columns: repeat(3, 42px); justify-content: center; gap: 12px; padding: 13px 18px 15px; }
+    .music-controls { display: grid; grid-template-columns: repeat(5, 42px); justify-content: center; gap: 9px; padding: 13px 18px 12px; }
     .music-control { width: 42px; height: 38px; display: grid; place-items: center; padding: 0; border: 2px solid var(--line); border-radius: 0; background: var(--sheet); box-shadow: 3px 3px 0 var(--line); }
     .music-control:hover { background: var(--pink-soft); transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--line); }
-    .music-control:disabled, .floating-lyrics-switch:disabled, .music-track:disabled { cursor: not-allowed; opacity: .45; transform: none; box-shadow: none; }
-    .music-progress:disabled { cursor: not-allowed; opacity: .45; }
     .music-control.primary { background: var(--blue); }
     .music-control svg { width: 17px; height: 17px; fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
+    .music-control.mode { color: var(--muted); font-family: ui-monospace, monospace; font-size: 1rem; font-weight: 950; }
+    .music-control.mode[aria-pressed="true"] { color: var(--on-accent); background: var(--blue); box-shadow: 3px 3px 0 var(--red); }
+    .music-volume-row { display: grid; grid-template-columns: auto minmax(0, 1fr) 34px; gap: 9px; align-items: center; padding: 0 18px 13px; }
+    .music-mini-button { min-width: 38px; min-height: 30px; border: 1px solid var(--line); border-radius: 0; background: var(--sheet-2); color: var(--ink); font-family: ui-monospace, monospace; font-size: .55rem; font-weight: 900; }
+    .music-mini-button:hover { background: var(--pink-soft); }
+    .music-volume { width: 100%; min-width: 0; accent-color: var(--blue-2); cursor: pointer; }
+    .music-volume-row > span { color: var(--muted); font-family: ui-monospace, monospace; font-size: .58rem; text-align: right; }
     .pause-shape { display: none; }
     .music-shell.is-playing .play-shape { display: none; }
     .music-shell.is-playing .pause-shape { display: block; }

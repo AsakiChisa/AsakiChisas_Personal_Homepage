@@ -38,6 +38,11 @@
       const musicPlay = document.getElementById('musicPlay');
       const musicPrevious = document.getElementById('musicPrevious');
       const musicNext = document.getElementById('musicNext');
+      const musicShuffle = document.getElementById('musicShuffle');
+      const musicRepeat = document.getElementById('musicRepeat');
+      const musicVolume = document.getElementById('musicVolume');
+      const musicVolumeValue = document.getElementById('musicVolumeValue');
+      const musicMute = document.getElementById('musicMute');
       const musicTitle = document.getElementById('musicTitle');
       const musicTime = document.getElementById('musicTime');
       const musicProgress = document.getElementById('musicProgress');
@@ -111,7 +116,7 @@
           musicPanelTitle: '浅咲的播放列表', nowPlaying: 'NOW PLAYING / 正在播放', musicProgress: '播放进度', musicReady: '媒体资源未包含在公开仓库中，请按目录说明放入已授权文件。',
           musicOmittedTitle: '媒体资源未包含', voyageMediaOmitted: '公开版本未附带音乐', voyageMediaHint: '按目录说明放入已授权文件',
           musicListTab: '播放列表', musicLyricsTab: '歌词', lyricsPending: '歌词未包含在公开仓库中。\n请按 lyrics/README.md 放入已授权文件。', floatingLyricsLabel: '浮动歌词', floatingLyricsOn: 'ON', floatingLyricsOff: 'OFF', floatingLyricsEnabled: '浮动歌词已开启', floatingLyricsDisabled: '浮动歌词已关闭', floatingLyricsLoading: '歌词准备中',
-          openPlaylist: '打开播放列表', closePlaylist: '收起播放列表', previousTrack: '上一首', nextTrack: '下一首', playMusic: '播放', pauseMusic: '暂停', musicPlaying: '正在播放', musicPaused: '音乐已暂停', musicBlocked: '浏览器暂未允许播放，请再次点击播放按钮。', musicUnavailable: '音频未包含在公开版本中'
+          openPlaylist: '打开播放列表', closePlaylist: '收起播放列表', previousTrack: '上一首', nextTrack: '下一首', playMusic: '播放', pauseMusic: '暂停', musicPlaying: '正在播放', musicPaused: '音乐已暂停', musicBlocked: '浏览器暂未允许播放，请再次点击播放按钮。', musicUnavailable: '音频未包含在公开版本中', musicVolume: '音量', shuffleMusic: '随机播放', repeatMusic: '单曲循环', muteMusic: '静音', unmuteMusic: '恢复音量'
         },
         en: {
           pageTitle: 'Chisa Asaki · Chisa Wiki',
@@ -166,7 +171,7 @@
           musicPanelTitle: "Chisa's playlist", nowPlaying: 'NOW PLAYING', musicProgress: 'Playback progress', musicReady: 'Media files are not included in the public repository. Add licensed files as described in the asset guides.',
           musicOmittedTitle: 'Media files not included', voyageMediaOmitted: 'No music is bundled with the public version', voyageMediaHint: 'Add licensed files using the documented names',
           musicListTab: 'Playlist', musicLyricsTab: 'Lyrics', lyricsPending: 'Lyrics are not included in the public repository.\nAdd licensed files as described in lyrics/README.md.', floatingLyricsLabel: 'Floating lyrics', floatingLyricsOn: 'ON', floatingLyricsOff: 'OFF', floatingLyricsEnabled: 'Floating lyrics enabled', floatingLyricsDisabled: 'Floating lyrics disabled', floatingLyricsLoading: 'Lyrics are loading',
-          openPlaylist: 'Open playlist', closePlaylist: 'Close playlist', previousTrack: 'Previous track', nextTrack: 'Next track', playMusic: 'Play', pauseMusic: 'Pause', musicPlaying: 'Now playing', musicPaused: 'Music paused', musicBlocked: 'Playback was blocked. Please press the play button again.', musicUnavailable: 'Audio is not included in the public version'
+          openPlaylist: 'Open playlist', closePlaylist: 'Close playlist', previousTrack: 'Previous track', nextTrack: 'Next track', playMusic: 'Play', pauseMusic: 'Pause', musicPlaying: 'Now playing', musicPaused: 'Music paused', musicBlocked: 'Playback was blocked. Please press the play button again.', musicUnavailable: 'Audio is not included in the public version', musicVolume: 'Volume', shuffleMusic: 'Shuffle', repeatMusic: 'Repeat one', muteMusic: 'Mute', unmuteMusic: 'Unmute'
         }
       };
 
@@ -206,6 +211,12 @@
         musicClose.setAttribute('aria-label', t('closePlaylist'));
         musicPrevious.setAttribute('aria-label', t('previousTrack'));
         musicNext.setAttribute('aria-label', t('nextTrack'));
+        musicShuffle.setAttribute('aria-label', t('shuffleMusic'));
+        musicShuffle.title = t('shuffleMusic');
+        musicRepeat.setAttribute('aria-label', t('repeatMusic'));
+        musicRepeat.title = t('repeatMusic');
+        musicVolume.setAttribute('aria-label', t('musicVolume'));
+        musicMute.setAttribute('aria-label', t(musicAudio.muted ? 'unmuteMusic' : 'muteMusic'));
         musicPlay.setAttribute('aria-label', t(musicAudio.paused ? 'playMusic' : 'pauseMusic'));
         musicProgress.setAttribute('aria-label', t('musicProgress'));
         musicNote.textContent = t(musicNote.dataset.state || 'musicReady');
@@ -583,6 +594,15 @@
       let currentTrack = 0;
       let userPausedMusic = false;
       let playAttempting = false;
+      let shuffleEnabled = false;
+      let repeatOneEnabled = false;
+      let savedMusicVolume = .55;
+      try {
+        shuffleEnabled = localStorage.getItem('chisa-music-shuffle') === 'true';
+        repeatOneEnabled = localStorage.getItem('chisa-music-repeat-one') === 'true';
+        const storedVolume = Number(localStorage.getItem('chisa-music-volume'));
+        if (Number.isFinite(storedVolume) && storedVolume >= 0 && storedVolume <= 1) savedMusicVolume = storedVolume;
+      } catch (_) {}
       let currentLyrics = [];
       let activeLyricIndex = -1;
       let lyricLoadToken = 0;
@@ -784,6 +804,29 @@
         }
       }
 
+      function randomTrackIndex() {
+        if (playlist.length < 2) return currentTrack;
+        let next = currentTrack;
+        while (next === currentTrack) next = Math.floor(Math.random() * playlist.length);
+        return next;
+      }
+
+      function updateMusicOptions() {
+        musicShuffle.setAttribute('aria-pressed', String(shuffleEnabled));
+        musicRepeat.setAttribute('aria-pressed', String(repeatOneEnabled));
+        musicVolume.value = String(musicAudio.volume);
+        musicVolumeValue.textContent = `${Math.round(musicAudio.volume * 100)}%`;
+        musicMute.textContent = musicAudio.muted || musicAudio.volume === 0 ? 'MUTE' : 'VOL';
+        musicMute.setAttribute('aria-label', t(musicAudio.muted ? 'unmuteMusic' : 'muteMusic'));
+      }
+
+      function saveMusicOptions() {
+        try {
+          localStorage.setItem('chisa-music-shuffle', String(shuffleEnabled));
+          localStorage.setItem('chisa-music-repeat-one', String(repeatOneEnabled));
+          localStorage.setItem('chisa-music-volume', String(musicAudio.volume));
+        } catch (_) {}
+      }
       function selectMusicTrack(index, shouldPlay = true) {
         if (!MEDIA_ASSETS_ENABLED) return;
         currentTrack = (index + playlist.length) % playlist.length;
@@ -814,9 +857,29 @@
           setMusicNote('musicPaused');
         }
       });
-      musicPrevious.addEventListener('click', () => selectMusicTrack(currentTrack - 1));
-      musicNext.addEventListener('click', () => selectMusicTrack(currentTrack + 1));
+      musicPrevious.addEventListener('click', () => selectMusicTrack(shuffleEnabled ? randomTrackIndex() : currentTrack - 1));
+      musicNext.addEventListener('click', () => selectMusicTrack(shuffleEnabled ? randomTrackIndex() : currentTrack + 1));
       musicTracks.forEach(button => button.addEventListener('click', () => selectMusicTrack(Number(button.dataset.track))));
+      musicShuffle.addEventListener('click', () => {
+        shuffleEnabled = !shuffleEnabled;
+        updateMusicOptions();
+        saveMusicOptions();
+      });
+      musicRepeat.addEventListener('click', () => {
+        repeatOneEnabled = !repeatOneEnabled;
+        updateMusicOptions();
+        saveMusicOptions();
+      });
+      musicVolume.addEventListener('input', () => {
+        musicAudio.volume = Math.min(1, Math.max(0, Number(musicVolume.value)));
+        if (musicAudio.volume > 0) musicAudio.muted = false;
+        updateMusicOptions();
+        saveMusicOptions();
+      });
+      musicMute.addEventListener('click', () => {
+        musicAudio.muted = !musicAudio.muted;
+        updateMusicOptions();
+      });
       musicViewButtons.forEach(button => button.addEventListener('click', () => setMusicView(button.dataset.musicView)));
       floatingLyricsToggle.addEventListener('click', () => setFloatingLyrics(!floatingLyricsEnabled));
       musicProgress.addEventListener('input', () => {
@@ -825,7 +888,7 @@
         updateMusicProgress();
       });
 
-      musicAudio.volume = .55;
+      musicAudio.volume = savedMusicVolume;
       musicAudio.addEventListener('loadedmetadata', updateMusicProgress);
       musicAudio.addEventListener('durationchange', updateMusicProgress);
       musicAudio.addEventListener('timeupdate', updateMusicProgress);
@@ -836,13 +899,16 @@
         setMusicNote('musicPlaying');
       });
       musicAudio.addEventListener('pause', syncMusicState);
-      musicAudio.addEventListener('ended', () => selectMusicTrack(currentTrack + 1));
-      musicAudio.addEventListener('error', () => {
-        syncMusicState();
-        setMusicNote('musicUnavailable');
+      musicAudio.addEventListener('ended', () => {
+        if (repeatOneEnabled) {
+          musicAudio.currentTime = 0;
+          attemptMusicPlay();
+        } else {
+          selectMusicTrack(shuffleEnabled ? randomTrackIndex() : currentTrack + 1, true);
+        }
       });
 
-      [musicPlay, musicPrevious, musicNext, musicProgress, floatingLyricsToggle, ...musicTracks]
+      [musicPlay, musicPrevious, musicNext, musicShuffle, musicRepeat, musicVolume, musicMute, musicProgress, floatingLyricsToggle, ...musicTracks]
         .forEach(control => { control.disabled = !MEDIA_ASSETS_ENABLED; });
       if (MEDIA_ASSETS_ENABLED) {
         musicAudio.src = playlist[currentTrack].src;
@@ -850,6 +916,7 @@
       } else {
         setMusicNote('musicReady');
       }
+      updateMusicOptions();
       updateMusicTrack();
       updateMusicProgress();
       setFloatingLyrics(false, false);

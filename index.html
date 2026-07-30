@@ -476,6 +476,9 @@
       </div>
 
       <div class="music-controls">
+        <button class="music-control mode" id="musicShuffle" type="button" aria-label="随机播放" aria-pressed="false" title="随机播放">
+          <span aria-hidden="true">⇄</span>
+        </button>
         <button class="music-control" id="musicPrevious" type="button" aria-label="上一首">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 6 9 12l10 6Z"/></svg>
         </button>
@@ -486,6 +489,16 @@
         <button class="music-control" id="musicNext" type="button" aria-label="下一首">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 6l10 6-10 6Z"/></svg>
         </button>
+        <button class="music-control mode" id="musicRepeat" type="button" aria-label="单曲循环" aria-pressed="false" title="单曲循环">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </div>
+
+      <div class="music-volume-row">
+        <button class="music-mini-button" id="musicMute" type="button" aria-label="静音">VOL</button>
+        <label class="sr-only" for="musicVolume" data-i18n="musicVolume">音量</label>
+        <input class="music-volume" id="musicVolume" type="range" min="0" max="1" value=".55" step=".05">
+        <span id="musicVolumeValue">55%</span>
       </div>
 
       <button class="floating-lyrics-switch" id="floatingLyricsToggle" type="button" aria-pressed="false">
