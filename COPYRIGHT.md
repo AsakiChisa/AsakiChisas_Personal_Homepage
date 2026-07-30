@@ -1,6 +1,6 @@
 # Copyright
 
-Copyright © 2026 SoyorinL / 千屿浅咲. All rights reserved.
+Copyright © 2026 AsakiChisa / 千屿浅咲. All rights reserved.
 
 除非另有书面说明，本仓库中的源代码、界面设计和文档不授予复制、再发布、商业使用或制作衍生作品的许可。公开访问本仓库不等于获得上述授权。
 
