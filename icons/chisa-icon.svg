@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CHISA WIKI">
+  <rect width="512" height="512" rx="108" fill="#f3f0e8"/>
+  <rect x="38" y="38" width="436" height="436" rx="78" fill="none" stroke="#1b1b1d" stroke-width="20"/>
+  <g transform="rotate(-6 256 238)">
+    <rect x="136" y="112" width="240" height="240" fill="#fffdf7" stroke="#1b1b1d" stroke-width="18"/>
+    <rect x="188" y="164" width="112" height="112" fill="#d8a1c0"/>
+    <rect x="252" y="218" width="92" height="92" fill="#91506f"/>
+  </g>
+  <text x="256" y="420" text-anchor="middle" fill="#1b1b1d" font-family="Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="8">CHISA</text>
+</svg>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="千屿浅咲的个人主页：公开服务状态、客户端使用说明、VPS 探针与常用网络工具。">
+  <meta name="theme-color" content="#f3f0e8">
+  <meta property="og:title" content="千屿浅咲 · Chisa Wiki">
+  <meta property="og:description" content="千屿浅咲的个人入口页。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.chisa.wiki/">
+  <meta property="og:image" content="https://www.chisa.wiki/icons/chisa-512.png">
+  <link rel="canonical" href="https://www.chisa.wiki/">
+  <link rel="icon" href="icons/chisa-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/chisa-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CHISA WIKI">
+  <title>千屿浅咲 · Chisa Wiki</title>
+
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('chisa-theme');
+        const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+        const language = localStorage.getItem('chisa-language') === 'en' ? 'en' : 'zh';
+        document.documentElement.dataset.language = language;
+        document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
+        const palette = localStorage.getItem('chisa-palette');
+        const background = localStorage.getItem('chisa-background');
+        document.documentElement.dataset.palette = ['asakipink', 'sakura', 'berry', 'peach'].includes(palette) ? palette : 'asakipink';
+        document.documentElement.dataset.background = ['dots', 'grid', 'plain', 'petals'].includes(background) ? background : 'dots';
+      } catch (_) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="回到首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">CHISA WIKI</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="主导航">
+        <a href="#moments" data-i18n="navMoments">动态</a>
+        <a href="#status" data-i18n="navStatus">状态</a>
+        <a href="#tutorial" data-i18n="navTutorial">教程</a>
+        <a href="#tools" data-i18n="navTools">导航</a>
+        <a href="#about" data-i18n="navAbout">关于</a>
+      </nav>
+
+      <div class="nav-right">
+        <label>
+          <span class="sr-only" data-i18n="languageLabel">页面语言</span>
+          <select class="language-select" id="languageSelect" aria-label="页面语言">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <span class="nav-time" id="navTime">CN / --:--</span>
+        <button class="square-button passport-toggle" id="passportToggle" type="button" aria-label="打开访客护照" aria-expanded="false" aria-controls="passportPanel" title="访客护照">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1 3 4.5V15H4v-2.5A5 5 0 0 1 7 8V3ZM5 19h14M8 15v4M16 15v4"/></svg>
+          <span class="passport-count" id="passportCount">0/5</span>
+        </button>
+        <button class="square-button appearance-toggle" id="themeToggle" type="button" aria-label="打开外观设置" aria-expanded="false" aria-controls="appearancePanel" title="页面外观">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.2a2 2 0 0 0 0-4H12a1.5 1.5 0 0 1 0-3h2.8A6.2 6.2 0 0 0 21 7.8C21 5.1 16.8 3 12 3Z"/><circle cx="7.5" cy="9" r=".8" fill="currentColor" stroke="none"/><circle cx="10.5" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="7.2" r=".8" fill="currentColor" stroke="none"/></svg>
+          <span class="appearance-toggle-label" data-i18n="appearanceButton">外观</span>
+          <span class="appearance-palette-hint" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </button>
+        <button class="square-button menu-toggle" id="menuToggle" type="button" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navLinks">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="appearance-panel" id="appearancePanel" aria-labelledby="appearanceTitle" aria-hidden="true" inert>
+    <div class="appearance-head">
+      <div><span class="passport-kicker">LOCAL APPEARANCE / 仅保存在本机</span><h2 id="appearanceTitle" data-i18n="appearanceTitle">页面外观</h2></div>
+      <button class="square-button appearance-close" id="appearanceClose" type="button" aria-label="收起外观设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="appearance-section">
+      <span class="appearance-label" data-i18n="appearanceMode">MODE / 明暗模式</span>
+      <div class="mode-options">
+        <button class="appearance-choice" type="button" data-theme-choice="light" data-i18n="appearanceLight">日间</button>
+        <button class="appearance-choice" type="button" data-theme-choice="dark" data-i18n="appearanceDark">夜间</button>
+      </div>
+    </div>
+    <div class="appearance-section">
+      <span class="appearance-label" data-i18n="appearancePalette">COLORS / 浅粉配色</span>
+      <div class="palette-options">
+        <button class="palette-choice" type="button" data-palette-choice="asakipink"><span class="palette-swatch asaki"></span><span data-i18n="paletteAsaki">浅咲粉</span></button>
+        <button class="palette-choice" type="button" data-palette-choice="sakura"><span class="palette-swatch sakura"></span><span data-i18n="paletteSakura">樱雾</span></button>
+        <button class="palette-choice" type="button" data-palette-choice="berry"><span class="palette-swatch berry"></span><span data-i18n="paletteBerry">暮莓</span></button>
+        <button class="palette-choice" type="button" data-palette-choice="peach"><span class="palette-swatch peach"></span><span data-i18n="palettePeach">杏粉</span></button>
+      </div>
+    </div>
+    <div class="appearance-section">
+      <span class="appearance-label" data-i18n="appearanceBackground">BACKGROUND / 页面底纹</span>
+      <p class="appearance-note" data-i18n="appearanceLocalNote">这些选择只会保存在当前设备，不会上传。</p>
+      <div class="background-options">
+        <button class="background-choice" type="button" data-background-choice="dots"><span class="background-preview dots"></span><span data-i18n="backgroundDots">点阵</span></button>
+        <button class="background-choice" type="button" data-background-choice="grid"><span class="background-preview grid"></span><span data-i18n="backgroundGrid">方格</span></button>
+        <button class="background-choice" type="button" data-background-choice="plain"><span class="background-preview"></span><span data-i18n="backgroundPlain">素纸</span></button>
+        <button class="background-choice" type="button" data-background-choice="petals"><span class="background-preview petals"></span><span data-i18n="backgroundPetals">花瓣</span></button>
+      </div>
+    </div>
+    <div class="appearance-section"><button class="appearance-reset" id="appearanceReset" type="button" data-i18n="appearanceReset">恢复默认外观</button></div>
+  </aside>
+
+  <aside class="passport-panel" id="passportPanel" aria-labelledby="passportTitle" aria-hidden="true" inert>
+    <div class="passport-head">
+      <div><span class="passport-kicker">VISITOR PASSPORT / LOCAL ONLY</span><h2 id="passportTitle" data-i18n="passportTitle">访客护照</h2></div>
+      <button class="square-button passport-close" id="passportClose" type="button" aria-label="收起访客护照"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="passport-profile">
+      <div class="passport-identity">
+        <img class="passport-avatar" src="avatar.jpg" alt="" width="68" height="68">
+        <div><span class="passport-owner-label">PAGE OWNER / 站长</span><strong class="passport-name">千屿浅咲</strong><span class="passport-handle">@Laurenlch · CHISA WIKI</span></div>
+      </div>
+      <p class="passport-bio" data-i18n="passportBio">喜欢数码和服务器，也在慢慢把这个小站收拾成自己喜欢的样子。</p>
+      <div class="passport-badges"><span>WUTHERING WAVES</span><span>VPS</span><span>MUSIC</span><span>PINK</span></div>
+      <div class="passport-stats">
+        <span class="passport-stat"><b>30</b><small data-i18n="passportNotes">纸条</small></span>
+        <span class="passport-stat"><b>6</b><small data-i18n="passportTracks">媒体位</small></span>
+        <span class="passport-stat"><b id="passportCollectedStat">0/5</b><small data-i18n="passportStamps">印章</small></span>
+      </div>
+      <div class="passport-actions">
+        <a href="https://t.me/Laurenlch" target="_blank" rel="noopener noreferrer" data-i18n="passportMessage">Telegram 找我 ↗</a>
+        <a href="#contact" data-close-passport data-i18n="passportContact">全部联系方式 ↓</a>
+      </div>
+    </div>
+    <p class="passport-intro" data-i18n="passportIntro">印章只保存在你的浏览器里。逛一逛，看看能收集到几枚。</p>
+    <div class="stamp-grid">
+      <div class="stamp-card locked" data-stamp-card="arrival"><span class="stamp-seal">01</span><span><strong data-i18n="stampArrival">初次抵达</strong><small data-i18n="stampArrivalHint">打开浅咲的小站</small></span></div>
+      <div class="stamp-card locked" data-stamp-card="radio"><span class="stamp-seal">02</span><span><strong data-i18n="stampRadio">电台听众</strong><small data-i18n="stampRadioHint">打开一次播放列表</small></span></div>
+      <div class="stamp-card locked" data-stamp-card="guide"><span class="stamp-seal">03</span><span><strong data-i18n="stampGuide">教程巡游</strong><small data-i18n="stampGuideHint">抵达客户端教程</small></span></div>
+      <div class="stamp-card locked" data-stamp-card="voyage"><span class="stamp-seal">04</span><span><strong data-i18n="stampVoyage">夜航许可</strong><small data-i18n="stampVoyageHint">发现隐藏的夜航模式</small></span></div>
+      <div class="stamp-card locked" data-stamp-card="finale"><span class="stamp-seal">05</span><span><strong data-i18n="stampFinale">读到最后</strong><small data-i18n="stampFinaleHint">抵达关于这里</small></span></div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="container">
+        <div class="hero-frame">
+          <div class="hero-copy">
+            <span class="hero-label">CHISA WIKI / PERSONAL PAGE</span>
+            <h1 id="heroTitle">千屿浅咲</h1>
+            <p class="alias">CHISA · ASAKI</p>
+            <p class="intro"><span data-i18n="heroHello">你好，这里是浅咲。这个页面放着我常用的入口、</span><strong data-i18n="heroNode">节点使用说明</strong><span data-i18n="heroTail">，还有平时折腾服务器会用到的小工具。</span></p>
+            <div class="hero-actions">
+              <a class="button primary" href="https://status.chisa.wiki/" target="_blank" rel="noopener noreferrer"><span data-i18n="heroServer">我的服务器</span> <span aria-hidden="true">→</span></a>
+              <a class="button" href="#tutorial" data-i18n="heroTutorial">怎么导入订阅</a>
+            </div>
+            <div class="topic-line" role="group" aria-label="关注内容"><span>VPS</span><span>NETWORK</span><span>DIGITAL</span><span>GAME</span></div>
+          </div>
+
+          <div class="portrait-side">
+            <div class="portrait-box">
+              <img src="avatar.jpg" alt="空白头像占位图" width="519" height="477" fetchpriority="high">
+              <span class="portrait-tag">ASAKI_01</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-strip" role="group" aria-label="快捷入口">
+          <a class="quick-link" href="#status">
+            <span class="quick-no">01</span>
+            <span><strong data-i18n="quickStatusTitle">服务怎么样</strong><small data-i18n="quickStatusDesc">主页和 VPS 公开状态</small></span>
+            <span class="quick-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="quick-link" href="#tutorial">
+            <span class="quick-no">02</span>
+            <span><strong data-i18n="quickGuideTitle">客户端怎么用</strong><small>Clash / Mihomo / Shadowrocket</small></span>
+            <span class="quick-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="quick-link" href="#contact">
+            <span class="quick-no">03</span>
+            <span><strong data-i18n="quickContactTitle">在 Telegram 找我</strong><small>@Laurenlch</small></span>
+            <span class="quick-arrow" aria-hidden="true">↓</span>
+          </a>
+        </div>
+
+        <div class="home-extras">
+          <section class="note-box" aria-labelledby="noteBoxTitle">
+            <span class="extra-kicker" id="noteBoxTitle" data-i18n="noteBoxTitle">CHISA'S NOTEBOX / 浅咲的纸条盒</span>
+            <p class="note-paper" id="notePaper">欢迎来到浅咲的小站。这里不赶时间，可以慢慢看。</p>
+            <div class="note-actions">
+              <span class="note-index" id="noteIndex">NOTE 01 / 30</span>
+              <button class="note-button" id="noteButton" type="button" data-i18n="drawNote">再抽一张纸条</button>
+            </div>
+          </section>
+
+          <section class="recent-card" aria-labelledby="recentTitle">
+            <div class="recent-head"><span class="extra-kicker" id="recentTitle" data-i18n="voyageLogTitle">VOYAGE LOG / 小站航行日志</span><span class="recent-date">CHISA_06</span></div>
+            <ul class="recent-lines voyage-lines">
+              <li><b>NOW</b><span id="voyageNow">公开版本未附带音乐</span></li>
+              <li><b>NEXT</b><span id="voyageNext">按目录说明放入已授权文件</span></li>
+            </ul>
+            <button class="button small install-app" id="installApp" type="button" hidden data-i18n="installApp">安装到设备</button>
+          </section>
+        </div>
+
+        <section class="personal-space" id="moments" aria-labelledby="momentsTitle">
+          <div class="space-heading">
+            <span class="section-no">M.</span>
+            <h2 id="momentsTitle" data-i18n="momentsTitle">浅咲的 Moments</h2>
+            <p data-i18n="momentsDesc">一些不需要单独写成文章的小事：最近去了哪里、听了什么，也把小站改了什么。</p>
+          </div>
+
+          <div class="space-layout">
+            <section class="moments-panel" aria-labelledby="momentListTitle">
+              <div class="space-panel-head"><strong id="momentListTitle">LATEST MOMENTS</strong><span>2026.07</span></div>
+              <ol class="moment-list">
+                <li class="moment-item">
+                  <time class="moment-date" datetime="2026-07-24">07 / 24</time>
+                  <div class="moment-copy"><strong data-i18n="moment1Title">小站又多了一间房</strong><p data-i18n="moment1Text">把动态、相册和外观设置整理进来了。功能多一点，但还是要给页面留些能呼吸的地方。</p><span class="moment-tag"># CHISA WIKI</span></div>
+                </li>
+                <li class="moment-item">
+                  <time class="moment-date" datetime="2026-07-20">07 / 20</time>
+                  <div class="moment-copy"><strong data-i18n="moment2Title">从演唱会回家</strong><p data-i18n="moment2Text">跨越千里，热闹了三天。回程突然安静下来，才发现那段共鸣还留在耳边。</p><span class="moment-tag"># WUTHERING WAVES</span></div>
+                </li>
+                <li class="moment-item">
+                  <time class="moment-date" datetime="2026-07-11">07 / 11</time>
+                  <div class="moment-copy"><strong data-i18n="moment3Title">公开版本只留文件清单</strong><p data-i18n="moment3Text">音乐和歌词不会随公开仓库发布；放入已授权的同名文件后，播放器才会启用。</p><span class="moment-tag"># PUBLIC TEMPLATE</span></div>
+                </li>
+              </ol>
+            </section>
+
+            <section class="gallery-panel" aria-labelledby="galleryTitle">
+              <div class="space-panel-head"><strong id="galleryTitle" data-i18n="galleryTitle">CHISA GALLERY / 千咲图库</strong><span>05 / 05</span></div>
+              <div class="gallery-grid">
+                <button class="gallery-card featured" type="button" data-gallery-src="gallery/autumn-riverside.png" data-gallery-caption="秋日河畔">
+                  <img src="gallery/autumn-riverside.png" alt="空白图库占位图：秋日河畔" width="1151" height="2048" loading="lazy">
+                  <span class="gallery-caption"><strong data-i18n="galleryAutumn">秋日河畔</strong><small>OPEN ↗</small></span>
+                </button>
+                <button class="gallery-card" type="button" data-gallery-src="gallery/starlit-city.jpeg" data-gallery-caption="星河游园">
+                  <img src="gallery/starlit-city.jpeg" alt="空白图库占位图：星河游园" width="1254" height="2048" loading="lazy">
+                  <span class="gallery-caption"><strong data-i18n="galleryStarlit">星河游园</strong><small>OPEN ↗</small></span>
+                </button>
+                <button class="gallery-card" type="button" data-gallery-src="gallery/afternoon-craft.jpeg" data-gallery-caption="午后手作">
+                  <img src="gallery/afternoon-craft.jpeg" alt="空白图库占位图：午后手作" width="2048" height="1152" loading="lazy">
+                  <span class="gallery-caption"><strong data-i18n="galleryCraft">午后手作</strong><small>OPEN ↗</small></span>
+                </button>
+                <button class="gallery-card" type="button" data-gallery-src="gallery/blue-sky.jpeg" data-gallery-caption="晴空高台">
+                  <img src="gallery/blue-sky.jpeg" alt="空白图库占位图：晴空高台" width="2048" height="1152" loading="lazy">
+                  <span class="gallery-caption"><strong data-i18n="gallerySky">晴空高台</strong><small>OPEN ↗</small></span>
+                </button>
+                <button class="gallery-card" type="button" data-gallery-src="gallery/blossoms.jpeg" data-gallery-caption="花影之间">
+                  <img src="gallery/blossoms.jpeg" alt="空白图库占位图：花影之间" width="2048" height="1070" loading="lazy">
+                  <span class="gallery-caption"><strong data-i18n="galleryBlossoms">花影之间</strong><small>OPEN ↗</small></span>
+                </button>
+              </div>
+              <p class="gallery-hint" data-i18n="galleryHint">当前使用空白占位图；替换为已授权的同名文件即可恢复图库。</p>
+            </section>
+          </div>
+
+          <aside class="contact-hub" id="contact" aria-labelledby="contactTitle">
+            <div class="contact-intro"><span class="extra-kicker">CONTACT DESK</span><h3 id="contactTitle" data-i18n="contactTitle">来这里找浅咲</h3><p data-i18n="contactDesc">公开联系方式集中放在这里，节点和订阅仍然只通过私人渠道发送。</p></div>
+            <div class="contact-links">
+              <a class="contact-card" href="https://t.me/Laurenlch" target="_blank" rel="noopener noreferrer"><b>TELEGRAM</b><span><strong data-i18n="contactTelegram">直接私聊</strong><small>@Laurenlch</small></span><span>↗</span></a>
+              <a class="contact-card" href="https://www.nodeseek.com/space/59083#/general" target="_blank" rel="noopener noreferrer"><b>NODESEEK</b><span><strong data-i18n="contactNodeSeek">社区主页</strong><small>UID 59083</small></span><span>↗</span></a>
+              <a class="contact-card" href="https://status.chisa.wiki/" target="_blank" rel="noopener noreferrer"><b>STATUS</b><span><strong data-i18n="contactStatus">服务器状态</strong><small>status.chisa.wiki</small></span><span>↗</span></a>
+            </div>
+          </aside>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="status" aria-labelledby="statusTitle">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-no">01.</span>
+          <h2 id="statusTitle" data-i18n="statusTitle">公开状态</h2>
+          <p data-i18n="statusDesc">这里只放访客可以看的内容。节点、订阅和后台地址不会出现在主页。</p>
+        </div>
+
+        <div class="status-board">
+          <div class="status-list">
+            <div class="status-row">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span class="status-copy"><strong data-i18n="statusHome">个人主页</strong><span data-i18n="statusHomeDesc">www.chisa.wiki · 你现在看到的页面</span></span>
+              <span class="status-word ok">ONLINE</span>
+            </div>
+            <div class="status-row">
+              <span class="status-dot info" aria-hidden="true"></span>
+              <span class="status-copy"><strong data-i18n="statusVps">VPS 公开探针</strong><span data-i18n="statusVpsDesc">在线状态、资源和基础连通性</span></span>
+              <a class="button small" href="https://status.chisa.wiki/" target="_blank" rel="noopener noreferrer" data-i18n="open">打开</a>
+            </div>
+            <div class="status-row">
+              <span class="status-dot private" aria-hidden="true"></span>
+              <span class="status-copy"><strong data-i18n="statusSub">订阅和节点</strong><span data-i18n="statusSubDesc">仅限已经获得授权的设备</span></span>
+              <span class="status-word private">PRIVATE</span>
+            </div>
+          </div>
+
+          <aside class="privacy-note" aria-label="不公开内容">
+            <span class="note-label">NOT ON THIS PAGE</span>
+            <h3 data-i18n="privateTitle">这些不放在主页</h3>
+            <p data-i18n="privateDesc">需要用到时，我会通过私人渠道单独发送。</p>
+            <ul><li data-i18n="privateIp">服务器 IP</li><li data-i18n="privatePanel">管理面板</li><li data-i18n="privateSub">完整订阅链接</li><li data-i18n="privateKey">节点参数和密钥</li></ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tutorial" aria-labelledby="tutorialTitle">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-no">02.</span>
+          <h2 id="tutorialTitle" data-i18n="tutorialTitle">客户端教程</h2>
+          <p data-i18n="tutorialDesc">点一下完成的步骤可以做标记。它只记在你的浏览器里，不会上传。</p>
+        </div>
+
+        <div class="tutorial-box">
+          <div class="tab-bar" role="tablist" aria-label="选择客户端教程">
+            <button class="tab-button active" id="tabClash" type="button" role="tab" aria-selected="true" aria-controls="panelClash" data-tab="clash">A / Clash &amp; Mihomo</button>
+            <button class="tab-button" id="tabShadowrocket" type="button" role="tab" aria-selected="false" aria-controls="panelShadowrocket" data-tab="shadowrocket">B / Shadowrocket</button>
+            <span class="progress-text" id="progressText">DONE 0 / 6</span>
+          </div>
+
+          <div class="tab-panel active" id="panelClash" role="tabpanel" aria-labelledby="tabClash" data-panel="clash">
+            <div class="tutorial-intro">
+              <span class="guide-no">A</span>
+              <h3>Clash / Mihomo</h3>
+              <p data-i18n="clashIntro">Windows、Android 和 Linux 都适用。日常使用建议选择规则模式。</p>
+              <div class="platforms"><span>WINDOWS</span><span>ANDROID</span><span>LINUX</span></div>
+            </div>
+            <div class="steps" data-guide="clash">
+              <button class="step" type="button" data-step="1"><span class="step-box">1</span><span><strong data-i18n="c1Title">打开配置页面</strong><span data-i18n="c1Desc">进入「配置」「Profiles」或「订阅」。</span></span></button>
+              <button class="step" type="button" data-step="2"><span class="step-box">2</span><span><strong data-i18n="c2Title">选择从 URL 导入</strong><span data-i18n="c2Desc">点击「新建配置」或「Import from URL」。</span></span></button>
+              <button class="step" type="button" data-step="3"><span class="step-box">3</span><span><strong data-i18n="c3Title">粘贴私有订阅链接</strong><span data-i18n="c3Desc">保存后等客户端把配置下载完成。</span></span></button>
+              <button class="step" type="button" data-step="4"><span class="step-box">4</span><span><strong data-i18n="c4Title">启用刚导入的配置</strong><span data-i18n="c4Desc">回到配置列表，选中新的配置。</span></span></button>
+              <button class="step" type="button" data-step="5"><span class="step-box">5</span><span><strong data-i18n="c5Title">选择规则模式</strong><span data-i18n="c5Desc">排查问题时再临时切换到全局模式。</span></span></button>
+              <button class="step" type="button" data-step="6"><span class="step-box">6</span><span><strong data-i18n="c6Title">开启代理并检查出口</strong><span data-i18n="c6Desc">打开系统代理或 TUN，再查询当前 IP。</span></span></button>
+              <div class="tip"><strong data-i18n="clashTipTitle">遇到节点没更新：</strong><span data-i18n="clashTipDesc">先手动刷新订阅，不用重复添加同一个链接。</span></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panelShadowrocket" role="tabpanel" aria-labelledby="tabShadowrocket" data-panel="shadowrocket" hidden>
+            <div class="tutorial-intro">
+              <span class="guide-no">B</span>
+              <h3>Shadowrocket</h3>
+              <p data-i18n="shadowIntro">适合 iPhone 和 iPad，可以添加订阅，也可以导入单个节点。</p>
+              <div class="platforms"><span>IPHONE</span><span>IPAD</span><span>IOS</span></div>
+            </div>
+            <div class="steps" data-guide="shadowrocket">
+              <button class="step" type="button" data-step="1"><span class="step-box">1</span><span><strong data-i18n="s1Title">点击右上角加号</strong><span data-i18n="s1Desc">在 Shadowrocket 首页点击「+」。</span></span></button>
+              <button class="step" type="button" data-step="2"><span class="step-box">2</span><span><strong data-i18n="s2Title">类型选择 Subscribe</strong><span data-i18n="s2Desc">中文界面对应「订阅」。</span></span></button>
+              <button class="step" type="button" data-step="3"><span class="step-box">3</span><span><strong data-i18n="s3Title">填写链接和备注</strong><span data-i18n="s3Desc">粘贴私有链接，备注可以写 Chisa。</span></span></button>
+              <button class="step" type="button" data-step="4"><span class="step-box">4</span><span><strong data-i18n="s4Title">保存并选择节点</strong><span data-i18n="s4Desc">回到首页，选择需要使用的节点。</span></span></button>
+              <button class="step" type="button" data-step="5"><span class="step-box">5</span><span><strong data-i18n="s5Title">允许添加 VPN 配置</strong><span data-i18n="s5Desc">第一次打开开关时，按系统提示允许。</span></span></button>
+              <button class="step" type="button" data-step="6"><span class="step-box">6</span><span><strong data-i18n="s6Title">检查连接结果</strong><span data-i18n="s6Desc">连接后查询 IP，确认出口和分流是否正确。</span></span></button>
+              <div class="tip"><strong data-i18n="shadowTipTitle">日常使用：</strong><span data-i18n="shadowTipDesc">保持配置为规则模式，国内应用就不会全部经过代理。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tools" aria-labelledby="toolsTitle">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-no">03.</span>
+          <h2 id="toolsTitle" data-i18n="toolsTitle">常用入口</h2>
+          <p data-i18n="toolsDesc">社区、联系方式、探针和网络检测。用分类或关键词都可以找。</p>
+        </div>
+
+        <div class="tool-controls">
+          <div class="filters" role="group" aria-label="入口分类">
+            <button class="filter-button active" type="button" data-filter="all" data-i18n="filterAll">全部</button>
+            <button class="filter-button" type="button" data-filter="community" data-i18n="filterCommunity">社区</button>
+            <button class="filter-button" type="button" data-filter="status" data-i18n="filterStatus">状态</button>
+            <button class="filter-button" type="button" data-filter="network" data-i18n="filterNetwork">网络</button>
+          </div>
+          <label class="search-box"><input id="toolSearch" type="search" placeholder="搜索入口" autocomplete="off" aria-label="搜索入口" data-i18n-placeholder="searchPlaceholder"></label>
+        </div>
+
+        <div class="tool-grid" id="toolGrid">
+          <article class="tool-card" data-category="community" data-search="nodeseek 个人主页 社区 论坛">
+            <div class="tool-number">01</div>
+            <div class="tool-content"><span class="tool-kind">COMMUNITY</span><h3 data-i18n="nodeSeekTitle">NodeSeek 个人主页</h3><p data-i18n="nodeSeekDesc">我的 NodeSeek 社区主页和公开动态。</p><a class="tool-link" href="https://www.nodeseek.com/space/59083#/general" target="_blank" rel="noopener noreferrer" data-i18n="nodeSeekLink">打开主页 ↗</a></div>
+          </article>
+          <article class="tool-card" data-category="community" data-search="telegram 私聊 联系 浅咲 laurenlch">
+            <div class="tool-number">02</div>
+            <div class="tool-content"><span class="tool-kind">CONTACT</span><h3 data-i18n="telegramTitle">Telegram 私聊</h3><p data-i18n="telegramDesc">直接联系我：@Laurenlch</p><div class="tool-actions"><a class="tool-link" href="https://t.me/Laurenlch" target="_blank" rel="noopener noreferrer" data-i18n="telegramLink">发起私聊 ↗</a><button class="copy-button" type="button" data-copy="@Laurenlch" data-i18n="copyUsername">复制用户名</button></div></div>
+          </article>
+          <article class="tool-card" data-category="status" data-search="vps 探针 状态 komari 服务器 在线">
+            <div class="tool-number">03</div>
+            <div class="tool-content"><span class="tool-kind">STATUS</span><h3 data-i18n="vpsTitle">VPS 公开探针</h3><p data-i18n="vpsDesc">查看服务器在线状态和基础连通性。</p><a class="tool-link" href="https://status.chisa.wiki/" target="_blank" rel="noopener noreferrer" data-i18n="vpsLink">查看探针 ↗</a></div>
+          </article>
+          <article class="tool-card" data-category="network" data-search="ip 查询 出口 asn 地区 网络">
+            <div class="tool-number">04</div>
+            <div class="tool-content"><span class="tool-kind">NETWORK</span><h3 data-i18n="ipTitle">IP 查询</h3><p data-i18n="ipDesc">查看当前出口 IP、ASN 和地区。</p><a class="tool-link" href="https://iplark.com/" target="_blank" rel="noopener noreferrer" data-i18n="ipLink">开始查询 ↗</a></div>
+          </article>
+          <article class="tool-card" data-category="network" data-search="dns 检测 域名 解析 生效 全球">
+            <div class="tool-number">05</div>
+            <div class="tool-content"><span class="tool-kind">NETWORK</span><h3 data-i18n="dnsTitle">DNS 检测</h3><p data-i18n="dnsDesc">检查域名解析是否已经在各地生效。</p><a class="tool-link" href="https://dnschecker.org/" target="_blank" rel="noopener noreferrer" data-i18n="dnsLink">检查解析 ↗</a></div>
+          </article>
+          <article class="tool-card" data-category="network" data-search="fast 网络 测速 下载 上传 延迟">
+            <div class="tool-number">06</div>
+            <div class="tool-content"><span class="tool-kind">NETWORK</span><h3 data-i18n="speedTitle">网络测速</h3><p data-i18n="speedDesc">快速查看当前网络的下载速度。</p><a class="tool-link" href="https://fast.com/" target="_blank" rel="noopener noreferrer" data-i18n="speedLink">开始测速 ↗</a></div>
+          </article>
+        </div>
+        <div class="empty-tools" id="emptyTools" data-i18n="emptyTools">没找到这个入口，换个关键词试试。</div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="aboutTitle">
+      <div class="container">
+        <div class="about-block">
+          <div>
+            <span class="about-label">04 / ABOUT THIS PLACE</span>
+            <h2 id="aboutTitle" data-i18n="aboutTitle">关于这里</h2>
+            <p class="about-quote" data-i18n="aboutQuote">不做什么宏大叙事，只是想把自己常用的东西放整齐。</p>
+          </div>
+          <div class="about-list">
+            <div class="about-item"><b>01</b><span><strong data-i18n="about1Title">一个静态页面</strong><small data-i18n="about1Desc">打开快，也没有复杂依赖。</small></span></div>
+            <div class="about-item"><b>02</b><span><strong data-i18n="about2Title">白天和夜晚</strong><small data-i18n="about2Desc">可以跟随系统，也可以自己切换。</small></span></div>
+            <div class="about-item"><b>03</b><span><strong data-i18n="about3Title">只放公开内容</strong><small data-i18n="about3Desc">节点、后台和密钥留在私人渠道。</small></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year">2026</span> CHISA WIKI / 千屿浅咲</span>
+      <span class="footer-links"><a href="#top">TOP</a><a href="https://t.me/Laurenlch" target="_blank" rel="noopener noreferrer">TELEGRAM</a><a href="https://status.chisa.wiki/" target="_blank" rel="noopener noreferrer">STATUS</a></span>
+    </div>
+  </footer>
+
+  <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption" inert>
+    <div class="lightbox-card">
+      <img id="lightboxImage" src="avatar.jpg" alt="">
+      <p class="lightbox-caption" id="lightboxCaption">千屿浅咲 · CHISA WIKI</p>
+      <button class="square-button lightbox-close" id="lightboxClose" type="button" aria-label="关闭图片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+  </div>
+
+  <div class="music-shell" id="musicShell">
+    <section class="music-panel" id="musicPanel" aria-labelledby="musicPanelTitle" aria-hidden="true" inert>
+      <div class="music-panel-head">
+        <div>
+          <span class="music-kicker">CHISA RADIO / 06 FILE SLOTS</span>
+          <h2 id="musicPanelTitle" data-i18n="musicPanelTitle">浅咲的播放列表</h2>
+        </div>
+        <button class="square-button music-close" id="musicClose" type="button" aria-label="收起播放列表">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <div class="music-now">
+        <span class="music-now-label" data-i18n="nowPlaying">NOW PLAYING / 正在播放</span>
+        <div class="music-title-line">
+          <strong id="musicTitle">媒体资源未包含</strong>
+          <span class="music-time" id="musicTime">--:-- / --:--</span>
+        </div>
+        <label class="sr-only" for="musicProgress" data-i18n="musicProgress">播放进度</label>
+        <input class="music-progress" id="musicProgress" type="range" min="0" max="1000" value="0" step="1">
+      </div>
+
+      <div class="music-controls">
+        <button class="music-control" id="musicPrevious" type="button" aria-label="上一首">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 6 9 12l10 6Z"/></svg>
+        </button>
+        <button class="music-control primary" id="musicPlay" type="button" aria-label="播放">
+          <svg class="play-shape" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg>
+          <svg class="pause-shape" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+        </button>
+        <button class="music-control" id="musicNext" type="button" aria-label="下一首">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 6l10 6-10 6Z"/></svg>
+        </button>
+      </div>
+
+      <button class="floating-lyrics-switch" id="floatingLyricsToggle" type="button" aria-pressed="false">
+        <span class="floating-switch-state"><span class="floating-switch-dot" aria-hidden="true"></span><span data-i18n="floatingLyricsLabel">浮动歌词</span></span>
+        <span class="floating-switch-value" id="floatingLyricsToggleText">OFF</span>
+      </button>
+
+      <div class="music-view-tabs" role="tablist" aria-label="播放器视图">
+        <button class="music-view-button active" id="musicListTab" type="button" role="tab" aria-selected="true" aria-controls="musicList" data-music-view="list" data-i18n="musicListTab">播放列表</button>
+        <button class="music-view-button" id="musicLyricsTab" type="button" role="tab" aria-selected="false" aria-controls="lyricsPanel" data-music-view="lyrics" data-i18n="musicLyricsTab">歌词</button>
+      </div>
+
+      <ol class="music-list" id="musicList" role="tabpanel" aria-labelledby="musicListTab">
+        <li><button class="music-track active" type="button" data-track="0" aria-current="true"><span class="music-track-number">01</span><span class="music-track-title">远航星的告别</span><span class="music-track-duration">03:45</span></button></li>
+        <li><button class="music-track" type="button" data-track="1"><span class="music-track-number">02</span><span class="music-track-title">不散的夏之灯</span><span class="music-track-duration">05:13</span></button></li>
+        <li><button class="music-track" type="button" data-track="2"><span class="music-track-number">03</span><span class="music-track-title">纸飞机</span><span class="music-track-duration">03:53</span></button></li>
+        <li><button class="music-track" type="button" data-track="3"><span class="music-track-number">04</span><span class="music-track-title">小小奇迹</span><span class="music-track-duration">04:22</span></button></li>
+        <li><button class="music-track" type="button" data-track="4"><span class="music-track-number">05</span><span class="music-track-title">星炬不熄</span><span class="music-track-duration">03:52</span></button></li>
+        <li><button class="music-track" type="button" data-track="5"><span class="music-track-number">06</span><span class="music-track-title">自无垠处归航之星</span><span class="music-track-duration">05:33</span></button></li>
+      </ol>
+      <div class="lyrics-panel" id="lyricsPanel" role="tabpanel" aria-labelledby="musicLyricsTab" hidden>
+        <div class="lyrics-empty" id="lyricsEmpty" data-i18n="lyricsPending">歌词未包含在公开仓库中。<br>请按 lyrics/README.md 放入已授权文件。</div>
+        <div id="lyricsLines"></div>
+      </div>
+      <p class="music-note" id="musicNote" data-i18n="musicReady">媒体资源未包含在公开仓库中，请按目录说明放入已授权文件。</p>
+    </section>
+
+    <button class="music-disc-button" id="musicToggle" type="button" aria-label="打开播放列表" aria-expanded="false" aria-controls="musicPanel" title="打开播放列表">
+      <span class="music-disc-art" aria-hidden="true"></span>
+      <span class="music-signal" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="floating-lyrics" id="floatingLyrics" aria-hidden="true" aria-live="polite">
+    <span class="floating-lyrics-kicker">CHISA RADIO / LIVE LYRICS</span>
+    <p class="floating-lyric-current" id="floatingLyricCurrent">♪ 远航星的告别</p>
+    <p class="floating-lyric-next" id="floatingLyricNext">歌词准备中</p>
+  </div>
+
+  <audio id="musicAudio" preload="none" playsinline></audio>
+
+  <button class="square-button back-top" id="backTop" type="button" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+  </button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

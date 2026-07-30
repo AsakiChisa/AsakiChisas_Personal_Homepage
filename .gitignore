@@ -1,0 +1,24 @@
+# 本地环境和敏感配置
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+secrets*
+
+# 编辑器和系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件和日志
+*.log
+*.tmp
+*.bak
+node_modules/
+dist/

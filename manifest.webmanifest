@@ -1,0 +1,35 @@
+{
+  "id": "./",
+  "name": "千屿浅咲 · Chisa Wiki",
+  "short_name": "CHISA WIKI",
+  "description": "千屿浅咲的个人主页、Moments、旅行相册、公开服务状态、客户端教程与浅咲电台。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f3f0e8",
+  "theme_color": "#d8a1c0",
+  "categories": ["personalization", "utilities"],
+  "icons": [
+    {
+      "src": "icons/chisa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/chisa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "浅咲的 Moments", "short_name": "动态", "url": "./#moments" },
+    { "name": "公开状态", "short_name": "状态", "url": "./#status" },
+    { "name": "客户端教程", "short_name": "教程", "url": "./#tutorial" },
+    { "name": "常用入口", "short_name": "导航", "url": "./#tools" }
+  ]
+}
