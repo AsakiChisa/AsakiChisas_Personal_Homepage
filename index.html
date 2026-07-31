@@ -234,6 +234,9 @@
                   <div class="moment-copy"><strong data-i18n="moment3Title">公开版本只留文件清单</strong><p data-i18n="moment3Text">音乐和歌词不会随公开仓库发布；放入已授权的同名文件后，播放器才会启用。</p><span class="moment-tag"># PUBLIC TEMPLATE</span></div>
                 </li>
               </ol>
+              <div class="moments-view-all-row">
+                <button class="moments-view-all" id="momentsViewAll" type="button" aria-haspopup="dialog" aria-controls="momentsModal" data-i18n="viewAllMoments">查看所有 Moments ↗</button>
+              </div>
             </section>
 
             <section class="gallery-panel" aria-labelledby="galleryTitle">
@@ -445,14 +448,80 @@
     </div>
   </footer>
 
+  <aside class="visitor-card" id="visitorCard" aria-hidden="true" aria-labelledby="visitorCardTitle" inert>
+    <div class="visitor-card-head">
+      <span class="visitor-card-avatar" aria-hidden="true"><span></span></span>
+      <div class="visitor-card-identity">
+        <strong id="visitorCardTitle" data-i18n="visitorTitle">访客</strong>
+        <small id="visitorSubtitle">LOCAL BROWSER CARD</small>
+      </div>
+      <button class="visitor-card-close" id="visitorCardClose" type="button" aria-label="关闭访客信息">×</button>
+    </div>
+    <p class="visitor-card-greeting" data-i18n="visitorGreeting">欢迎来到千屿浅咲的小站。</p>
+    <dl class="visitor-details">
+      <div><dt data-i18n="visitorSystemLabel">系统</dt><dd id="visitorSystem">正在识别…</dd></div>
+      <div><dt data-i18n="visitorBrowserLabel">浏览器</dt><dd id="visitorBrowser">正在识别…</dd></div>
+      <div><dt data-i18n="visitorLanguageLabel">语言</dt><dd id="visitorLanguage">正在识别…</dd></div>
+      <div><dt data-i18n="visitorIpLabel">公网 IP</dt><dd id="visitorIp">正在读取…</dd></div>
+      <div><dt data-i18n="visitorEdgeLabel">接入节点</dt><dd id="visitorEdge">正在读取…</dd></div>
+      <div><dt data-i18n="visitorDateLabel">日期</dt><dd id="visitorDate">—</dd></div>
+    </dl>
+    <p class="visitor-privacy" data-i18n="visitorPrivacy">这张卡片只在你的浏览器中整理显示，不会通过此卡片另行提交给页面主人；托管服务仍可能保留常规访问日志。</p>
+  </aside>
+
+  <div class="moments-modal" id="momentsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="momentsModalTitle" inert>
+    <section class="moments-modal-card" id="momentsModalCard" tabindex="-1">
+      <header class="moments-modal-head">
+        <div>
+          <span class="moments-modal-kicker">MOMENTS ARCHIVE / 06 ENTRIES</span>
+          <h2 id="momentsModalTitle" data-i18n="momentsArchiveTitle">浅咲的所有 Moments</h2>
+          <p data-i18n="momentsArchiveDesc">从最近一次更新开始，依次收好生活、旅行、音乐和小站留下的片段。</p>
+        </div>
+        <button class="square-button moments-modal-close" id="momentsModalClose" type="button" aria-label="关闭所有动态"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </header>
+      <div class="moments-modal-body">
+        <ol class="moment-list moments-archive-list">
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-07-24">07 / 24</time>
+            <div class="moment-copy"><strong data-i18n="moment1Title">小站又多了一间房</strong><p data-i18n="moment1Text">把动态、相册和外观设置整理进来了。功能多一点，但还是要给页面留些能呼吸的地方。</p><span class="moment-tag"># CHISA WIKI</span></div>
+          </li>
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-07-20">07 / 20</time>
+            <div class="moment-copy"><strong data-i18n="moment2Title">从演唱会回家</strong><p data-i18n="moment2Text">跨越千里，热闹了三天。回程突然安静下来，才发现那段共鸣还留在耳边。</p><span class="moment-tag"># WUTHERING WAVES</span></div>
+          </li>
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-07-11">07 / 11</time>
+            <div class="moment-copy"><strong data-i18n="moment3Title">公开版本只留文件清单</strong><p data-i18n="moment3Text">音乐和歌词不会随公开仓库发布；放入已授权的同名文件后，播放器才会启用。</p><span class="moment-tag"># PUBLIC TEMPLATE</span></div>
+          </li>
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-06-30">06 / 30</time>
+            <div class="moment-copy"><strong data-i18n="moment4Title">给旧照片补上名字</strong><p data-i18n="moment4Text">把散落在文件夹里的旅途照片重新排好，也给每一段光线留了一个容易记住的标题。</p><span class="moment-tag"># GALLERY</span></div>
+          </li>
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-06-18">06 / 18</time>
+            <div class="moment-copy"><strong data-i18n="moment5Title">夜航模式开始试运行</strong><p data-i18n="moment5Text">深色页面终于有了合适的墨色和粉色，夜里打开时不会再显得太亮。</p><span class="moment-tag"># NIGHT VOYAGE</span></div>
+          </li>
+          <li class="moment-item">
+            <time class="moment-date" datetime="2026-06-04">06 / 04</time>
+            <div class="moment-copy"><strong data-i18n="moment6Title">把常用入口收进主页</strong><p data-i18n="moment6Text">状态页、联系方式和网络工具各自找到位置，从这里出发就不用再翻许多书签。</p><span class="moment-tag"># BOOKMARKS</span></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
+
   <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption" inert>
-    <div class="lightbox-card">
+    <div class="lightbox-card" id="lightboxCard" tabindex="-1">
+      <button class="lightbox-nav lightbox-previous" id="lightboxPrevious" type="button" aria-label="上一张图片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
       <img id="lightboxImage" src="avatar.jpg" alt="">
-      <p class="lightbox-caption" id="lightboxCaption">千屿浅咲 · CHISA WIKI</p>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="下一张图片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+      <div class="lightbox-meta">
+        <p class="lightbox-caption" id="lightboxCaption">千屿浅咲 · CHISA WIKI</p>
+        <span class="lightbox-counter" id="lightboxCounter" aria-live="polite">01 / 05</span>
+      </div>
       <button class="square-button lightbox-close" id="lightboxClose" type="button" aria-label="关闭图片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     </div>
   </div>
-
   <div class="music-shell" id="musicShell">
     <section class="music-panel" id="musicPanel" aria-labelledby="musicPanelTitle" aria-hidden="true" inert>
       <div class="music-panel-head">
