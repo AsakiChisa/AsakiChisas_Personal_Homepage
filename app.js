@@ -20,10 +20,27 @@
       const paletteChoices = [...document.querySelectorAll('[data-palette-choice]')];
       const backgroundChoices = [...document.querySelectorAll('[data-background-choice]')];
       const galleryLightbox = document.getElementById('galleryLightbox');
+      const lightboxCard = document.getElementById('lightboxCard');
       const lightboxImage = document.getElementById('lightboxImage');
       const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxCounter = document.getElementById('lightboxCounter');
       const lightboxClose = document.getElementById('lightboxClose');
+      const lightboxPrevious = document.getElementById('lightboxPrevious');
+      const lightboxNext = document.getElementById('lightboxNext');
       const galleryButtons = [...document.querySelectorAll('[data-gallery-src]')];
+      const momentsViewAll = document.getElementById('momentsViewAll');
+      const momentsModal = document.getElementById('momentsModal');
+      const momentsModalCard = document.getElementById('momentsModalCard');
+      const momentsModalClose = document.getElementById('momentsModalClose');
+      const visitorCard = document.getElementById('visitorCard');
+      const visitorCardClose = document.getElementById('visitorCardClose');
+      const visitorSubtitle = document.getElementById('visitorSubtitle');
+      const visitorSystem = document.getElementById('visitorSystem');
+      const visitorBrowser = document.getElementById('visitorBrowser');
+      const visitorLanguage = document.getElementById('visitorLanguage');
+      const visitorIp = document.getElementById('visitorIp');
+      const visitorEdge = document.getElementById('visitorEdge');
+      const visitorDate = document.getElementById('visitorDate');
       const notePaper = document.getElementById('notePaper');
       const noteIndex = document.getElementById('noteIndex');
       const noteButton = document.getElementById('noteButton');
@@ -61,6 +78,14 @@
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
       let toastTimer;
       let currentLanguage = root.dataset.language === 'en' ? 'en' : 'zh';
+      let currentGalleryIndex = 0;
+      let galleryTouchStartX = 0;
+      let galleryTouchStartY = 0;
+      let galleryReturnFocus = null;
+      let momentsReturnFocus = null;
+      let visitorTraceState = 'loading';
+      let visitorTrace = { ip: '', loc: '', colo: '' };
+      let visitorShowTimer;
 
       const translations = {
         zh: {
@@ -74,6 +99,11 @@
           moment1Title: '小站又多了一间房', moment1Text: '把动态、相册和外观设置整理进来了。功能多一点，但还是要给页面留些能呼吸的地方。',
           moment2Title: '从演唱会回家', moment2Text: '跨越千里，热闹了三天。回程突然安静下来，才发现那段共鸣还留在耳边。',
           moment3Title: '公开版本只留文件清单', moment3Text: '音乐和歌词不会随公开仓库发布；放入已授权的同名文件后，播放器才会启用。',
+          moment4Title: '给旧照片补上名字', moment4Text: '把散落在文件夹里的旅途照片重新排好，也给每一段光线留了一个容易记住的标题。',
+          moment5Title: '夜航模式开始试运行', moment5Text: '深色页面终于有了合适的墨色和粉色，夜里打开时不会再显得太亮。',
+          moment6Title: '把常用入口收进主页', moment6Text: '状态页、联系方式和网络工具各自找到位置，从这里出发就不用再翻许多书签。',
+          viewAllMoments: '查看所有 Moments ↗', momentsArchiveTitle: '浅咲的所有 Moments', momentsArchiveDesc: '从最近一次更新开始，依次收好生活、旅行、音乐和小站留下的片段。', closeMoments: '关闭所有动态',
+          previousImage: '上一张图片', nextImage: '下一张图片',
           galleryTitle: 'CHISA GALLERY / 千咲图库', galleryAutumn: '秋日河畔', galleryStarlit: '星河游园', galleryCraft: '午后手作', gallerySky: '晴空高台', galleryBlossoms: '花影之间', galleryHint: '当前使用空白占位图；替换为已授权的同名文件即可恢复图库。',
           contactTitle: '来这里找浅咲', contactDesc: '公开联系方式集中放在这里，节点和订阅仍然只通过私人渠道发送。', contactTelegram: '直接私聊', contactNodeSeek: '社区主页', contactStatus: '服务器状态',
           statusTitle: '公开状态', statusDesc: '这里只放访客可以看的内容。节点、订阅和后台地址不会出现在主页。',
@@ -110,6 +140,7 @@
           noteBoxTitle: "CHISA'S NOTEBOX / 浅咲的纸条盒", drawNote: '再抽一张纸条', voyageLogTitle: 'VOYAGE LOG / 小站航行日志', installApp: '安装到设备',
           passportTitle: '访客护照', passportIntro: '印章只保存在你的浏览器里。逛一逛，看看能收集到几枚。', passportBio: '喜欢数码和服务器，也在慢慢把这个小站收拾成自己喜欢的样子。', passportNotes: '纸条', passportTracks: '媒体位', passportStamps: '印章', passportMessage: 'Telegram 找我 ↗', passportContact: '全部联系方式 ↓', openPassport: '打开访客护照', closePassport: '收起访客护照',
           appearanceTitle: '页面外观', appearanceButton: '外观', appearanceMode: 'MODE / 明暗模式', appearanceLight: '日间', appearanceDark: '夜间', appearancePalette: 'COLORS / 浅粉配色', paletteAsaki: '浅咲粉', paletteSakura: '樱雾', paletteBerry: '暮莓', palettePeach: '杏粉', appearanceBackground: 'BACKGROUND / 页面底纹', appearanceLocalNote: '这些选择只会保存在当前设备，不会上传。', backgroundDots: '点阵', backgroundGrid: '方格', backgroundPlain: '素纸', backgroundPetals: '花瓣', appearanceReset: '恢复默认外观', openAppearance: '打开外观设置', closeAppearance: '收起外观设置', appearanceSaved: '外观已保存在这台设备', appearanceResetDone: '已恢复默认外观', closeImage: '关闭图片',
+          visitorTitle: '访客', visitorGreeting: '欢迎来到千屿浅咲的小站。', visitorSystemLabel: '系统', visitorBrowserLabel: '浏览器', visitorLanguageLabel: '语言', visitorIpLabel: '公网 IP', visitorEdgeLabel: '接入节点', visitorDateLabel: '日期', visitorPrivacy: '这张卡片只在你的浏览器中整理显示，不会通过此卡片另行提交给页面主人；托管服务仍可能保留常规访问日志。', visitorClose: '关闭访客信息', visitorLoading: '正在读取…', visitorUnavailable: '暂不可用', visitorLocalPreview: '本地预览', visitorLocalSubtitle: 'LOCAL PREVIEW', visitorBrowserOnly: 'BROWSER ONLY',
           stampArrival: '初次抵达', stampArrivalHint: '打开浅咲的小站', stampRadio: '电台听众', stampRadioHint: '打开一次播放列表', stampGuide: '教程巡游', stampGuideHint: '抵达客户端教程', stampVoyage: '夜航许可', stampVoyageHint: '发现隐藏的夜航模式', stampFinale: '读到最后', stampFinaleHint: '抵达关于这里', stampUnlocked: '获得新印章：',
           voyageOn: '夜航模式已开启。星星正在缓慢经过。', voyageOff: '夜航结束，已经返回日常页面。', appInstalled: '小站已安装到设备。',
           progress: '已完成', themeDark: '切到夜间模式了', themeLight: '切回日间模式了', themeLabel: '打开外观设置', copied: '已复制', copyFail: '复制失败，请手动复制', openMenu: '打开导航菜单', closeMenu: '关闭导航菜单', backTop: '回到顶部',
@@ -129,6 +160,11 @@
           moment1Title: 'Another room for this little site', moment1Text: 'Moments, a gallery and appearance settings are now in place. More features, but still enough room to breathe.',
           moment2Title: 'Home from the concert', moment2Text: 'I crossed a long distance for three lively days. The ride home went quiet, but that resonance was still in my ears.',
           moment3Title: 'The public version keeps file slots only', moment3Text: 'Music and lyrics are not distributed with the public repository. The player is enabled only after licensed files are supplied.',
+          moment4Title: 'Giving old photos their names', moment4Text: 'I sorted the travel photos that had been scattered across folders and gave each piece of light an easy-to-remember title.',
+          moment5Title: 'Night voyage enters testing', moment5Text: 'The dark page finally found the right balance of ink and pink, so it no longer feels too bright after sunset.',
+          moment6Title: 'Bringing useful links home', moment6Text: 'Status, contact and network tools each found a place here, saving a long search through bookmarks.',
+          viewAllMoments: 'VIEW ALL MOMENTS ↗', momentsArchiveTitle: "All of Chisa's Moments", momentsArchiveDesc: 'Life, travel, music and site notes, kept in reverse chronological order.', closeMoments: 'Close all moments',
+          previousImage: 'Previous image', nextImage: 'Next image',
           galleryTitle: 'TRAVEL GALLERY', galleryAutumn: 'Autumn Riverside', galleryStarlit: 'Starlit City', galleryCraft: 'Afternoon Craft', gallerySky: 'Under a Blue Sky', galleryBlossoms: 'Among the Blossoms', galleryHint: 'Blank placeholders are included. Replace them with licensed files using the same names.',
           contactTitle: 'Find Chisa here', contactDesc: 'Public contact links are collected here. Nodes and subscriptions still travel through private channels only.', contactTelegram: 'Message me', contactNodeSeek: 'Community profile', contactStatus: 'Server status',
           statusTitle: 'Public status', statusDesc: 'Only visitor-safe information lives here. Nodes, subscriptions and admin addresses stay private.',
@@ -165,6 +201,7 @@
           noteBoxTitle: "CHISA'S NOTEBOX", drawNote: 'Draw another note', voyageLogTitle: 'VOYAGE LOG / Station Voyage Log', installApp: 'Install this site',
           passportTitle: 'Visitor passport', passportIntro: 'Stamps stay only in your browser. Wander around and see how many you can collect.', passportBio: 'Into digital gear and servers—slowly turning this little site into a place that feels like mine.', passportNotes: 'NOTES', passportTracks: 'SLOTS', passportStamps: 'STAMPS', passportMessage: 'Find me on Telegram ↗', passportContact: 'All contact links ↓', openPassport: 'Open visitor passport', closePassport: 'Close visitor passport',
           appearanceTitle: 'Page appearance', appearanceButton: 'STYLE', appearanceMode: 'MODE', appearanceLight: 'Light', appearanceDark: 'Dark', appearancePalette: 'SOFT PINK PALETTES', paletteAsaki: 'Asaki Pink', paletteSakura: 'Sakura Mist', paletteBerry: 'Dusk Berry', palettePeach: 'Peach Pink', appearanceBackground: 'BACKGROUND', appearanceLocalNote: 'These choices stay only on this device and are never uploaded.', backgroundDots: 'Dots', backgroundGrid: 'Grid', backgroundPlain: 'Plain', backgroundPetals: 'Petals', appearanceReset: 'Reset appearance', openAppearance: 'Open appearance settings', closeAppearance: 'Close appearance settings', appearanceSaved: 'Appearance saved on this device', appearanceResetDone: 'Default appearance restored', closeImage: 'Close image',
+          visitorTitle: 'Visitor', visitorGreeting: "Welcome to Chisa's little site.", visitorSystemLabel: 'System', visitorBrowserLabel: 'Browser', visitorLanguageLabel: 'Language', visitorIpLabel: 'Public IP', visitorEdgeLabel: 'Edge', visitorDateLabel: 'Date', visitorPrivacy: 'This card is assembled only in your browser and is not separately submitted to the page owner. The hosting provider may still keep ordinary access logs.', visitorClose: 'Close visitor information', visitorLoading: 'Loading…', visitorUnavailable: 'Unavailable', visitorLocalPreview: 'Local preview', visitorLocalSubtitle: 'LOCAL PREVIEW', visitorBrowserOnly: 'BROWSER ONLY',
           stampArrival: 'First arrival', stampArrivalHint: "Open Chisa's little site", stampRadio: 'Radio listener', stampRadioHint: 'Open the playlist once', stampGuide: 'Guide wanderer', stampGuideHint: 'Reach the client guides', stampVoyage: 'Night permit', stampVoyageHint: 'Discover night voyage mode', stampFinale: 'Read to the end', stampFinaleHint: 'Reach the About section', stampUnlocked: 'New stamp unlocked: ',
           voyageOn: 'Night voyage is on. The stars are passing slowly.', voyageOff: 'Night voyage ended. Back to the everyday page.', appInstalled: 'The site has been installed.',
           progress: 'DONE', themeDark: 'Dark mode enabled', themeLight: 'Light mode enabled', themeLabel: 'Open appearance settings', copied: 'Copied', copyFail: 'Could not copy. Please copy it manually.', openMenu: 'Open navigation', closeMenu: 'Close navigation', backTop: 'Back to top',
@@ -198,6 +235,12 @@
         themeToggle.title = t(appearanceOpen ? 'closeAppearance' : 'openAppearance');
         appearanceClose.setAttribute('aria-label', t('closeAppearance'));
         lightboxClose.setAttribute('aria-label', t('closeImage'));
+        lightboxPrevious.setAttribute('aria-label', t('previousImage'));
+        lightboxNext.setAttribute('aria-label', t('nextImage'));
+        momentsModalClose.setAttribute('aria-label', t('closeMoments'));
+        visitorCardClose.setAttribute('aria-label', t('visitorClose'));
+        renderVisitorDetails();
+        if (galleryLightbox.classList.contains('open')) renderGalleryItem(currentGalleryIndex);
         menuToggle.setAttribute('aria-label', t('openMenu'));
         backTop.setAttribute('aria-label', t('backTop'));
         backTop.title = t('backTop');
@@ -479,10 +522,61 @@
       unlockStamp('arrival', true);
       renderPassport();
 
-      function setGalleryLightbox(open, source = '', caption = '') {
+      function syncOverlayScrollLock() {
+        const overlayOpen = momentsModal.classList.contains('open') || galleryLightbox.classList.contains('open');
+        document.body.style.overflow = overlayOpen ? 'hidden' : '';
+      }
+
+      function setMomentsModal(open, restoreFocus = true) {
         if (open) {
-          lightboxImage.src = source;
-          lightboxCaption.textContent = caption;
+          momentsReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : momentsViewAll;
+          setGalleryLightbox(false, currentGalleryIndex, false);
+          setAppearancePanel(false);
+          setPassport(false);
+          setMusicPanel(false);
+        }
+        momentsModal.classList.toggle('open', open);
+        momentsModal.setAttribute('aria-hidden', String(!open));
+        momentsModal.inert = !open;
+        syncOverlayScrollLock();
+        if (open) {
+          requestAnimationFrame(() => momentsModalClose.focus());
+        } else if (restoreFocus && momentsReturnFocus) {
+          momentsReturnFocus.focus();
+        }
+      }
+
+      momentsViewAll.addEventListener('click', () => setMomentsModal(true));
+      momentsModalClose.addEventListener('click', () => setMomentsModal(false));
+      momentsModal.addEventListener('click', event => {
+        if (event.target === momentsModal) setMomentsModal(false);
+      });
+
+      function galleryCaptionAt(index) {
+        const button = galleryButtons[index];
+        return button?.querySelector('.gallery-caption strong')?.textContent || button?.dataset.galleryCaption || '';
+      }
+
+      function renderGalleryItem(index) {
+        if (!galleryButtons.length) return;
+        currentGalleryIndex = (index + galleryButtons.length) % galleryButtons.length;
+        const button = galleryButtons[currentGalleryIndex];
+        const caption = galleryCaptionAt(currentGalleryIndex);
+        lightboxImage.src = button.dataset.gallerySrc;
+        lightboxImage.alt = caption;
+        lightboxCaption.textContent = caption;
+        lightboxCounter.textContent = `${String(currentGalleryIndex + 1).padStart(2, '0')} / ${String(galleryButtons.length).padStart(2, '0')}`;
+      }
+
+      function showAdjacentGalleryItem(direction) {
+        renderGalleryItem(currentGalleryIndex + direction);
+      }
+
+      function setGalleryLightbox(open, index = currentGalleryIndex, restoreFocus = true) {
+        if (open) {
+          galleryReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : galleryButtons[index];
+          setMomentsModal(false, false);
+          renderGalleryItem(index);
           setAppearancePanel(false);
           setPassport(false);
           setMusicPanel(false);
@@ -490,18 +584,119 @@
         galleryLightbox.classList.toggle('open', open);
         galleryLightbox.setAttribute('aria-hidden', String(!open));
         galleryLightbox.inert = !open;
-        document.body.style.overflow = open ? 'hidden' : '';
+        syncOverlayScrollLock();
+        if (open) {
+          requestAnimationFrame(() => lightboxClose.focus());
+        } else if (restoreFocus && galleryReturnFocus) {
+          galleryReturnFocus.focus();
+        }
       }
 
-      galleryButtons.forEach(button => button.addEventListener('click', () => {
-        const caption = button.querySelector('.gallery-caption strong')?.textContent || button.dataset.galleryCaption || '';
-        setGalleryLightbox(true, button.dataset.gallerySrc, caption);
-        lightboxClose.focus();
-      }));
+      galleryButtons.forEach((button, index) => button.addEventListener('click', () => setGalleryLightbox(true, index)));
+      lightboxPrevious.addEventListener('click', () => showAdjacentGalleryItem(-1));
+      lightboxNext.addEventListener('click', () => showAdjacentGalleryItem(1));
       lightboxClose.addEventListener('click', () => setGalleryLightbox(false));
       galleryLightbox.addEventListener('click', event => {
         if (event.target === galleryLightbox) setGalleryLightbox(false);
       });
+      lightboxImage.addEventListener('touchstart', event => {
+        const touch = event.changedTouches[0];
+        galleryTouchStartX = touch.clientX;
+        galleryTouchStartY = touch.clientY;
+      }, { passive: true });
+      lightboxImage.addEventListener('touchend', event => {
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - galleryTouchStartX;
+        const deltaY = touch.clientY - galleryTouchStartY;
+        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+        showAdjacentGalleryItem(deltaX < 0 ? 1 : -1);
+      }, { passive: true });
+
+      function detectVisitorSystem() {
+        const userAgent = navigator.userAgent || '';
+        const platform = navigator.userAgentData?.platform || navigator.platform || '';
+        if (/iPad|iPhone|iPod/i.test(userAgent) || (/Mac/i.test(platform) && navigator.maxTouchPoints > 1)) return 'iOS / iPadOS';
+        if (/Android/i.test(userAgent)) return 'Android';
+        if (/Windows/i.test(platform) || /Windows NT/i.test(userAgent)) return 'Windows';
+        if (/Mac/i.test(platform) || /Mac OS X/i.test(userAgent)) return 'macOS';
+        if (/Linux/i.test(platform) || /Linux/i.test(userAgent)) return 'Linux';
+        return platform || t('visitorUnavailable');
+      }
+
+      function detectVisitorBrowser() {
+        const userAgent = navigator.userAgent || '';
+        if (/Edg\//i.test(userAgent)) return currentLanguage === 'en' ? 'Microsoft Edge' : 'Microsoft Edge 浏览器';
+        if (/OPR\//i.test(userAgent)) return currentLanguage === 'en' ? 'Opera Browser' : 'Opera 浏览器';
+        if (/SamsungBrowser\//i.test(userAgent)) return currentLanguage === 'en' ? 'Samsung Internet' : 'Samsung 浏览器';
+        if (/FxiOS|Firefox\//i.test(userAgent)) return currentLanguage === 'en' ? 'Firefox Browser' : 'Firefox 浏览器';
+        if (/CriOS|Chrome\//i.test(userAgent)) return currentLanguage === 'en' ? 'Chrome Browser' : 'Chrome 浏览器';
+        if (/Safari\//i.test(userAgent) && /Version\//i.test(userAgent)) return currentLanguage === 'en' ? 'Safari Browser' : 'Safari 浏览器';
+        return currentLanguage === 'en' ? 'Web Browser' : '网页浏览器';
+      }
+
+      function renderVisitorDetails() {
+        const locale = currentLanguage === 'en' ? 'en-US' : 'zh-CN';
+        visitorSystem.textContent = detectVisitorSystem();
+        visitorBrowser.textContent = detectVisitorBrowser();
+        visitorLanguage.textContent = (navigator.languages?.length ? navigator.languages.slice(0, 2) : [navigator.language || locale]).join(' / ');
+        visitorDate.textContent = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' }).format(new Date());
+        if (visitorTraceState === 'ready') {
+          visitorIp.textContent = visitorTrace.ip || t('visitorUnavailable');
+          visitorEdge.textContent = [visitorTrace.loc, visitorTrace.colo && `${visitorTrace.colo} EDGE`].filter(Boolean).join(' · ') || 'Cloudflare';
+          visitorSubtitle.textContent = [visitorTrace.loc, visitorTrace.colo && `${visitorTrace.colo} EDGE`].filter(Boolean).join(' · ') || 'CLOUDFLARE EDGE';
+        } else if (visitorTraceState === 'local') {
+          visitorIp.textContent = t('visitorLocalPreview');
+          visitorEdge.textContent = t('visitorLocalPreview');
+          visitorSubtitle.textContent = t('visitorLocalSubtitle');
+        } else if (visitorTraceState === 'unavailable') {
+          visitorIp.textContent = t('visitorUnavailable');
+          visitorEdge.textContent = t('visitorUnavailable');
+          visitorSubtitle.textContent = t('visitorBrowserOnly');
+        } else {
+          visitorIp.textContent = t('visitorLoading');
+          visitorEdge.textContent = t('visitorLoading');
+          visitorSubtitle.textContent = 'LOCAL BROWSER CARD';
+        }
+      }
+
+      async function loadVisitorTrace() {
+        const localPreview = location.protocol === 'file:' || ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
+        if (localPreview) {
+          visitorTraceState = 'local';
+          renderVisitorDetails();
+          return;
+        }
+        try {
+          const response = await fetch('/cdn-cgi/trace', { cache: 'no-store', credentials: 'same-origin' });
+          if (!response.ok) throw new Error('Trace unavailable');
+          const trace = Object.fromEntries((await response.text()).trim().split('\n').map(line => {
+            const separator = line.indexOf('=');
+            return separator > -1 ? [line.slice(0, separator), line.slice(separator + 1)] : [line, ''];
+          }));
+          if (!trace.ip) throw new Error('IP missing');
+          visitorTrace = { ip: trace.ip || '', loc: trace.loc || '', colo: trace.colo || '' };
+          visitorTraceState = 'ready';
+        } catch (_) {
+          visitorTraceState = 'unavailable';
+        }
+        renderVisitorDetails();
+      }
+
+      function setVisitorCard(open) {
+        clearTimeout(visitorShowTimer);
+        visitorCard.classList.toggle('open', open);
+        visitorCard.setAttribute('aria-hidden', String(!open));
+        visitorCard.inert = !open;
+      }
+
+      visitorCardClose.addEventListener('click', () => setVisitorCard(false));
+      renderVisitorDetails();
+      loadVisitorTrace();
+      const scheduleVisitorCard = () => {
+        visitorShowTimer = setTimeout(() => setVisitorCard(true), reducedMotion ? 100 : 650);
+      };
+      if (document.readyState === 'complete') scheduleVisitorCard();
+      else window.addEventListener('load', scheduleVisitorCard, { once: true });
 
       let voyagePreviousTheme = root.dataset.theme === 'dark' ? 'dark' : 'light';
       function setNightVoyage(enabled, notify = true) {
@@ -1027,12 +1222,53 @@
         if (!passportPanel.contains(event.target) && !passportToggle.contains(event.target)) setPassport(false);
         if (!appearancePanel.contains(event.target) && !themeToggle.contains(event.target)) setAppearancePanel(false);
       });
+      function trapOverlayFocus(event, container) {
+        const focusable = [...container.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+          .filter(element => !element.hidden && element.getClientRects().length);
+        if (!focusable.length) {
+          event.preventDefault();
+          container.focus();
+          return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+
       document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-          if (galleryLightbox.classList.contains('open')) {
-            setGalleryLightbox(false);
+        if (galleryLightbox.classList.contains('open')) {
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            showAdjacentGalleryItem(-1);
             return;
           }
+          if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            showAdjacentGalleryItem(1);
+            return;
+          }
+          if (event.key === 'Tab') trapOverlayFocus(event, lightboxCard);
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            setGalleryLightbox(false);
+          }
+          return;
+        }
+        if (momentsModal.classList.contains('open')) {
+          if (event.key === 'Tab') trapOverlayFocus(event, momentsModalCard);
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            setMomentsModal(false);
+          }
+          return;
+        }
+        if (event.key === 'Escape') {
           if (musicPanel.classList.contains('open')) {
             setMusicPanel(false);
             musicToggle.focus();
@@ -1045,6 +1281,7 @@
             setAppearancePanel(false);
             themeToggle.focus();
           }
+          if (visitorCard.classList.contains('open')) setVisitorCard(false);
         }
       });
     })();
