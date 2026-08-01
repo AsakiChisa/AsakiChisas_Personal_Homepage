@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'chisa-home-';
-const CACHE_NAME = `${CACHE_PREFIX}v22`;
+const CACHE_NAME = `${CACHE_PREFIX}v23`;
 const CORE_FILES = [
   './',
   './index.html',
