@@ -61,7 +61,7 @@
         zh: {
           pageTitle: '千屿浅咲 · Chisa Wiki',
           pageDescription: '千屿浅咲的个人主页：公开服务状态、客户端使用说明、VPS 探针与常用网络工具。',
-          skip: '跳到主要内容', navMoments: '动态', navStatus: '状态', navTutorial: '教程', navTools: '导航', navAbout: '关于', languageLabel: '页面语言',
+          skip: '跳到主要内容', navMoments: '动态', navStatus: '状态', navTutorial: '教程', navTools: '导航', languageLabel: '页面语言',
           heroHello: '你好，这里是浅咲。这个页面放着我常用的入口、', heroNode: '节点使用说明', heroTail: '，还有平时折腾服务器会用到的小工具。',
           heroServer: '我的服务器', heroTutorial: '怎么导入订阅',
           quickStatusTitle: '服务怎么样', quickStatusDesc: '主页和 VPS 公开状态', quickGuideTitle: '客户端怎么用', quickContactTitle: '在 Telegram 找我',
@@ -100,12 +100,10 @@
           ipTitle: 'IP 查询', ipDesc: '查看当前出口 IP、ASN 和地区。', ipLink: '开始查询 ↗',
           dnsTitle: 'DNS 检测', dnsDesc: '检查域名解析是否已经在各地生效。', dnsLink: '检查解析 ↗',
           speedTitle: '网络测速', speedDesc: '快速查看当前网络的下载速度。', speedLink: '开始测速 ↗', emptyTools: '没找到这个入口，换个关键词试试。',
-          aboutTitle: '关于这里', aboutQuote: '不做什么宏大叙事，只是想把自己常用的东西放整齐。',
-          about1Title: '一个静态页面', about1Desc: '打开快，也没有复杂依赖。', about2Title: '白天和夜晚', about2Desc: '可以跟随系统，也可以自己切换。', about3Title: '只放公开内容', about3Desc: '节点、后台和密钥留在私人渠道。',
           noteBoxTitle: "CHISA'S NOTEBOX / 浅咲的纸条盒", drawNote: '再抽一张纸条', voyageLogTitle: 'VOYAGE LOG / 小站航行日志', installApp: '安装到设备',
           passportTitle: '访客护照', passportIntro: '印章只保存在你的浏览器里。逛一逛，看看能收集到几枚。', passportBio: '喜欢数码和服务器，也在慢慢把这个小站收拾成自己喜欢的样子。', passportNotes: '纸条', passportTracks: '媒体位', passportStamps: '印章', passportMessage: 'Telegram 找我 ↗', passportContact: '全部联系方式 ↓', openPassport: '打开访客护照', closePassport: '收起访客护照',
           appearanceTitle: '页面外观', appearanceButton: '外观', appearanceMode: 'MODE / 明暗模式', appearanceLight: '日间', appearanceDark: '夜间', appearancePalette: 'COLORS / 浅粉配色', paletteAsaki: '浅咲粉', paletteSakura: '樱雾', paletteBerry: '暮莓', palettePeach: '杏粉', appearanceBackground: 'BACKGROUND / 页面底纹', appearanceLocalNote: '这些选择只会保存在当前设备，不会上传。', backgroundDots: '点阵', backgroundGrid: '方格', backgroundPlain: '素纸', backgroundPetals: '花瓣', appearanceReset: '恢复默认外观', openAppearance: '打开外观设置', closeAppearance: '收起外观设置', appearanceSaved: '外观已保存在这台设备', appearanceResetDone: '已恢复默认外观', closeImage: '关闭图片',
-          stampArrival: '初次抵达', stampArrivalHint: '打开浅咲的小站', stampRadio: '电台听众', stampRadioHint: '打开一次播放列表', stampGuide: '教程巡游', stampGuideHint: '抵达客户端教程', stampVoyage: '夜航许可', stampVoyageHint: '发现隐藏的夜航模式', stampFinale: '读到最后', stampFinaleHint: '抵达关于这里', stampUnlocked: '获得新印章：',
+          stampArrival: '初次抵达', stampArrivalHint: '打开浅咲的小站', stampRadio: '电台听众', stampRadioHint: '打开一次播放列表', stampGuide: '教程巡游', stampGuideHint: '抵达客户端教程', stampVoyage: '夜航许可', stampVoyageHint: '发现隐藏的夜航模式', stampUnlocked: '获得新印章：',
           voyageOn: '夜航模式已开启。星星正在缓慢经过。', voyageOff: '夜航结束，已经返回日常页面。', appInstalled: '小站已安装到设备。',
           progress: '已完成', themeDark: '切到夜间模式了', themeLight: '切回日间模式了', themeLabel: '打开外观设置', copied: '已复制', copyFail: '复制失败，请手动复制', openMenu: '打开导航菜单', closeMenu: '关闭导航菜单', backTop: '回到顶部',
           musicPanelTitle: '浅咲的播放列表', nowPlaying: 'NOW PLAYING / 正在播放', musicProgress: '播放进度', musicReady: '媒体资源未包含在公开仓库中，请按目录说明放入已授权文件。',
@@ -116,7 +114,7 @@
         en: {
           pageTitle: 'Chisa Asaki · Chisa Wiki',
           pageDescription: 'Chisa Asaki’s personal homepage for public service status, client guides, VPS monitoring and network tools.',
-          skip: 'Skip to content', navMoments: 'Moments', navStatus: 'Status', navTutorial: 'Guides', navTools: 'Links', navAbout: 'About', languageLabel: 'Page language',
+          skip: 'Skip to content', navMoments: 'Moments', navStatus: 'Status', navTutorial: 'Guides', navTools: 'Links', languageLabel: 'Page language',
           heroHello: "Hi, I'm Chisa. This page keeps my usual links, ", heroNode: 'client setup notes', heroTail: ', and a few tools I use when working on servers.',
           heroServer: 'View server status', heroTutorial: 'Import a subscription',
           quickStatusTitle: 'Service status', quickStatusDesc: 'Homepage and public VPS status', quickGuideTitle: 'Client setup guides', quickContactTitle: 'Find me on Telegram',
@@ -155,12 +153,10 @@
           ipTitle: 'IP lookup', ipDesc: 'Check your current public IP, ASN and location.', ipLink: 'Check IP ↗',
           dnsTitle: 'DNS checker', dnsDesc: 'Check whether DNS records have propagated worldwide.', dnsLink: 'Check DNS ↗',
           speedTitle: 'Speed test', speedDesc: 'Quickly check the download speed of your current connection.', speedLink: 'Start test ↗', emptyTools: 'No matching link. Try another keyword.',
-          aboutTitle: 'About this place', aboutQuote: 'Nothing grand—just a tidy place for the things I use often.',
-          about1Title: 'A static page', about1Desc: 'Fast to open, with no complex dependencies.', about2Title: 'Day and night', about2Desc: 'Follow the system or switch the theme yourself.', about3Title: 'Public content only', about3Desc: 'Nodes, admin pages and keys remain private.',
           noteBoxTitle: "CHISA'S NOTEBOX", drawNote: 'Draw another note', voyageLogTitle: 'VOYAGE LOG / Station Voyage Log', installApp: 'Install this site',
           passportTitle: 'Visitor passport', passportIntro: 'Stamps stay only in your browser. Wander around and see how many you can collect.', passportBio: 'Into digital gear and servers—slowly turning this little site into a place that feels like mine.', passportNotes: 'NOTES', passportTracks: 'SLOTS', passportStamps: 'STAMPS', passportMessage: 'Find me on Telegram ↗', passportContact: 'All contact links ↓', openPassport: 'Open visitor passport', closePassport: 'Close visitor passport',
           appearanceTitle: 'Page appearance', appearanceButton: 'STYLE', appearanceMode: 'MODE', appearanceLight: 'Light', appearanceDark: 'Dark', appearancePalette: 'SOFT PINK PALETTES', paletteAsaki: 'Asaki Pink', paletteSakura: 'Sakura Mist', paletteBerry: 'Dusk Berry', palettePeach: 'Peach Pink', appearanceBackground: 'BACKGROUND', appearanceLocalNote: 'These choices stay only on this device and are never uploaded.', backgroundDots: 'Dots', backgroundGrid: 'Grid', backgroundPlain: 'Plain', backgroundPetals: 'Petals', appearanceReset: 'Reset appearance', openAppearance: 'Open appearance settings', closeAppearance: 'Close appearance settings', appearanceSaved: 'Appearance saved on this device', appearanceResetDone: 'Default appearance restored', closeImage: 'Close image',
-          stampArrival: 'First arrival', stampArrivalHint: "Open Chisa's little site", stampRadio: 'Radio listener', stampRadioHint: 'Open the playlist once', stampGuide: 'Guide wanderer', stampGuideHint: 'Reach the client guides', stampVoyage: 'Night permit', stampVoyageHint: 'Discover night voyage mode', stampFinale: 'Read to the end', stampFinaleHint: 'Reach the About section', stampUnlocked: 'New stamp unlocked: ',
+          stampArrival: 'First arrival', stampArrivalHint: "Open Chisa's little site", stampRadio: 'Radio listener', stampRadioHint: 'Open the playlist once', stampGuide: 'Guide wanderer', stampGuideHint: 'Reach the client guides', stampVoyage: 'Night permit', stampVoyageHint: 'Discover night voyage mode', stampUnlocked: 'New stamp unlocked: ',
           voyageOn: 'Night voyage is on. The stars are passing slowly.', voyageOff: 'Night voyage ended. Back to the everyday page.', appInstalled: 'The site has been installed.',
           progress: 'DONE', themeDark: 'Dark mode enabled', themeLight: 'Light mode enabled', themeLabel: 'Open appearance settings', copied: 'Copied', copyFail: 'Could not copy. Please copy it manually.', openMenu: 'Open navigation', closeMenu: 'Close navigation', backTop: 'Back to top',
           musicPanelTitle: "Chisa's playlist", nowPlaying: 'NOW PLAYING', musicProgress: 'Playback progress', musicReady: 'Media files are not included in the public repository. Add licensed files as described in the asset guides.',
@@ -424,7 +420,7 @@
       renderCurrentNote();
 
       const stampKeys = {
-        arrival: 'stampArrival', radio: 'stampRadio', guide: 'stampGuide', voyage: 'stampVoyage', finale: 'stampFinale'
+        arrival: 'stampArrival', radio: 'stampRadio', guide: 'stampGuide', voyage: 'stampVoyage'
       };
       let collectedStamps = [];
       try {
@@ -528,11 +524,9 @@
           entries.forEach(entry => {
             if (!entry.isIntersecting) return;
             if (entry.target.id === 'tutorial') unlockStamp('guide');
-            if (entry.target.id === 'about') unlockStamp('finale');
           });
         }, { threshold: .16 });
         stampObserver.observe(document.getElementById('tutorial'));
-        stampObserver.observe(document.getElementById('about'));
       }
 
       let deferredInstallPrompt = null;

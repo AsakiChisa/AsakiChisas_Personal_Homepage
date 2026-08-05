@@ -54,7 +54,6 @@
         <a href="#status" data-i18n="navStatus">状态</a>
         <a href="#tutorial" data-i18n="navTutorial">教程</a>
         <a href="#tools" data-i18n="navTools">导航</a>
-        <a href="#about" data-i18n="navAbout">关于</a>
       </nav>
 
       <div class="nav-right">
@@ -68,7 +67,7 @@
         <span class="nav-time" id="navTime">CN / --:--</span>
         <button class="square-button passport-toggle" id="passportToggle" type="button" aria-label="打开访客护照" aria-expanded="false" aria-controls="passportPanel" title="访客护照">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1 3 4.5V15H4v-2.5A5 5 0 0 1 7 8V3ZM5 19h14M8 15v4M16 15v4"/></svg>
-          <span class="passport-count" id="passportCount">0/5</span>
+          <span class="passport-count" id="passportCount">0/4</span>
         </button>
         <button class="square-button appearance-toggle" id="themeToggle" type="button" aria-label="打开外观设置" aria-expanded="false" aria-controls="appearancePanel" title="页面外观">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.2a2 2 0 0 0 0-4H12a1.5 1.5 0 0 1 0-3h2.8A6.2 6.2 0 0 0 21 7.8C21 5.1 16.8 3 12 3Z"/><circle cx="7.5" cy="9" r=".8" fill="currentColor" stroke="none"/><circle cx="10.5" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="7.2" r=".8" fill="currentColor" stroke="none"/></svg>
@@ -131,7 +130,7 @@
       <div class="passport-stats">
         <span class="passport-stat"><b>30</b><small data-i18n="passportNotes">纸条</small></span>
         <span class="passport-stat"><b>6</b><small data-i18n="passportTracks">媒体位</small></span>
-        <span class="passport-stat"><b id="passportCollectedStat">0/5</b><small data-i18n="passportStamps">印章</small></span>
+        <span class="passport-stat"><b id="passportCollectedStat">0/4</b><small data-i18n="passportStamps">印章</small></span>
       </div>
       <div class="passport-actions">
         <a href="https://t.me/Laurenlch" target="_blank" rel="noopener noreferrer" data-i18n="passportMessage">Telegram 找我 ↗</a>
@@ -144,7 +143,6 @@
       <div class="stamp-card locked" data-stamp-card="radio"><span class="stamp-seal">02</span><span><strong data-i18n="stampRadio">电台听众</strong><small data-i18n="stampRadioHint">打开一次播放列表</small></span></div>
       <div class="stamp-card locked" data-stamp-card="guide"><span class="stamp-seal">03</span><span><strong data-i18n="stampGuide">教程巡游</strong><small data-i18n="stampGuideHint">抵达客户端教程</small></span></div>
       <div class="stamp-card locked" data-stamp-card="voyage"><span class="stamp-seal">04</span><span><strong data-i18n="stampVoyage">夜航许可</strong><small data-i18n="stampVoyageHint">发现隐藏的夜航模式</small></span></div>
-      <div class="stamp-card locked" data-stamp-card="finale"><span class="stamp-seal">05</span><span><strong data-i18n="stampFinale">读到最后</strong><small data-i18n="stampFinaleHint">抵达关于这里</small></span></div>
     </div>
   </aside>
 
@@ -415,22 +413,6 @@
       </div>
     </section>
 
-    <section class="section" id="about" aria-labelledby="aboutTitle">
-      <div class="container">
-        <div class="about-block">
-          <div>
-            <span class="about-label">04 / ABOUT THIS PLACE</span>
-            <h2 id="aboutTitle" data-i18n="aboutTitle">关于这里</h2>
-            <p class="about-quote" data-i18n="aboutQuote">不做什么宏大叙事，只是想把自己常用的东西放整齐。</p>
-          </div>
-          <div class="about-list">
-            <div class="about-item"><b>01</b><span><strong data-i18n="about1Title">一个静态页面</strong><small data-i18n="about1Desc">打开快，也没有复杂依赖。</small></span></div>
-            <div class="about-item"><b>02</b><span><strong data-i18n="about2Title">白天和夜晚</strong><small data-i18n="about2Desc">可以跟随系统，也可以自己切换。</small></span></div>
-            <div class="about-item"><b>03</b><span><strong data-i18n="about3Title">只放公开内容</strong><small data-i18n="about3Desc">节点、后台和密钥留在私人渠道。</small></span></div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
